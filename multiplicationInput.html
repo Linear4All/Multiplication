@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Matrix Multiplication</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<h1>Matrix Multiplication</h1>
+	<a href="HTMLPage1.html">Go back to home page</a>
+	<p>Please enter the size of the matrices to multiply: </p>
+	<form>
+		Matrix 1 Rows: <br> <input type="number" id="row1" name="row1">
+		<br>
+		Matrix 1 Columns: <br> <input type="number" id="col1" name="col1">
+		<br>
+		Matrix 2 Rows: <br> <input type="number" id="row2" name="row2">
+		<br>
+		Matrix 2 Columns: <br> <input type="number" id="col2" name="col2">
+		<br>
+		<input type="button" value="Create Matrices" onclick="createMatrixInputs()">
+	</form>
+
+	<p> Input matrices here: </p>
+	<div id="matrices"></div>
+	<p>Result:</p>
+	<div id="result"></div>
+
+	<script>
+		//Global variables to hold matrix inputs
+		let matrix1 = [];
+		let matrix2 = [];
+
+		// Function to create matrix input boxes
+		function createMatrixInputs() {
+			let row1 = document.getElementById("row1").value;
+			let col1 = document.getElementById("col1").value;
+			let row2 = document.getElementById("row2").value;
+			let col2 = document.getElementById("col2").value;
+			
+			// Check that matrices are compatible
+			if ((col1 != row2) || (col1 < 1) || (row1 < 1) || (col2 < 1) || (row2 < 1)) {
+				alert("Matrices cannot be multiplied");
+				return;
+			}
+			
+			// Create empty matrices
+			matrix1 = [];
+			matrix2 = [];
+		
+			let matricesDiv = document.getElementById("matrices");
+			matricesDiv.innerHTML = "";
+
+			let i, j;
+			
+			// Add input boxes for first matrix
+			for (i = 0; i < row1; i++) {
+				matrix1.push([]);
+				for (j = 0; j < col1; j++) {
+					let input = document.createElement("input");
+					input.type = "number";
+					input.name = "matrix1-" + i + "-" + j;
+					input.value = 0;
+					matricesDiv.appendChild(input);
+					matrix1[i][j] = input;
+				}
+				matricesDiv.appendChild(document.createElement("br"));
+			}
+
+			matricesDiv.appendChild(document.createElement("br"));
+
+			// Add input boxes for second matrix
+			for (i = 0; i < row2; i++) {
+				matrix2.push([]);
+				for (j = 0; j < col2; j++) {
+					let input = document.createElement("input");
+					input.type = "number";
+					input.name = "matrix2-" + i + "-" + j;
+					input.value = 0;
+					matricesDiv.appendChild(input);
+					matrix2[i][j] = input;
+				}
+				matricesDiv.appendChild(document.createElement("br"));
+			}
+
+			// Add a button to multiply the two matrices
+			var button = document.createElement("input");
+			button.type = "button";
+			button.value = "Multiply Matrices";
+			button.onclick = function() {doMultiplication()};
+			matricesDiv.appendChild(button);
+		}
+
+		// Function to multiply two matrices and print the result
+		function doMultiplication() {
+			let i, j;
+
+			let rows1 = matrix1.length;
+			let cols1 = matrix1[0].length;
+			let rows2 = matrix2.length;
+			let cols2 = matrix2[0].length;
+			
+			
+			let resultDiv = document.getElementById("result");
+			resultDiv.innerHTML = "";
+
+			// Get values from input boxes and put into matrices
+			inputMat1 = []
+			for (i = 0; i < rows1; i++) {
+				inputMat1.push([])
+				for (j = 0; j < cols1; j++) {
+					inputMat1[i][j] = matrix1[i][j].value
+				}
+			}
+			
+			inputMat2 = []
+			for (i = 0; i < rows2; i++) {
+				inputMat2.push([])
+				for (j = 0; j < cols2; j++) {
+					inputMat2[i][j] = matrix2[i][j].value
+				}
+			}
+
+			// Run the multiply function
+			let result = multiply(inputMat1, inputMat2);
+			
+			// Add the matrix values to a table and add to document
+			let table = document.createElement("table");
+			
+
+			for (i = 0; i < rows1; i++) {
+				let row = document.createElement("tr");
+				for (j = 0; j < cols2; j++) {
+					let cell = document.createElement("td");
+					cell.innerText = result[i][j];
+					row.appendChild(cell);
+				}
+				table.appendChild(row);
+			}
+
+			resultDiv.appendChild(table);
+		}
+	</script>
+
+	<script src="multiplication.js"> </script>
+
+</body>
+</html>
